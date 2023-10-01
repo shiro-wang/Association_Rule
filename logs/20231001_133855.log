@@ -1,0 +1,1 @@
+2023-10-01 13:38:59,192 [main.py:45] INFO: Arguments: Namespace(min_sup=0.05, min_conf=0.05, dataset='ibm-2022-grading.txt')

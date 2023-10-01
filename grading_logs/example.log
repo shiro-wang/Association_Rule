@@ -1,0 +1,76 @@
+2023-09-28 20:55:37,786 [grading.py:129] ERROR: [Errno 2] No such file or directory: './outputs/example-fp_growth-0.1-0.1.csv'
+Traceback (most recent call last):
+  File "C:\Users\n0970\Desktop\IKMlab\hw1_example_2023\grading.py", line 127, in <module>
+    main(args)
+  File "C:\Users\n0970\Desktop\IKMlab\hw1_example_2023\grading.py", line 92, in main
+    data = read_csv(file_path)
+  File "C:\Users\n0970\Desktop\IKMlab\hw1_example_2023\grading.py", line 71, in read_csv
+    return pd.read_csv(file_path)
+  File "C:\Users\n0970\AppData\Local\Programs\Python\Python310\lib\site-packages\pandas\util\_decorators.py", line 211, in wrapper
+    return func(*args, **kwargs)
+  File "C:\Users\n0970\AppData\Local\Programs\Python\Python310\lib\site-packages\pandas\util\_decorators.py", line 317, in wrapper
+    return func(*args, **kwargs)
+  File "C:\Users\n0970\AppData\Local\Programs\Python\Python310\lib\site-packages\pandas\io\parsers\readers.py", line 950, in read_csv
+    return _read(filepath_or_buffer, kwds)
+  File "C:\Users\n0970\AppData\Local\Programs\Python\Python310\lib\site-packages\pandas\io\parsers\readers.py", line 605, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+  File "C:\Users\n0970\AppData\Local\Programs\Python\Python310\lib\site-packages\pandas\io\parsers\readers.py", line 1442, in __init__
+    self._engine = self._make_engine(f, self.engine)
+  File "C:\Users\n0970\AppData\Local\Programs\Python\Python310\lib\site-packages\pandas\io\parsers\readers.py", line 1729, in _make_engine
+    self.handles = get_handle(
+  File "C:\Users\n0970\AppData\Local\Programs\Python\Python310\lib\site-packages\pandas\io\common.py", line 857, in get_handle
+    handle = open(
+FileNotFoundError: [Errno 2] No such file or directory: './outputs/example-fp_growth-0.1-0.1.csv'
+2023-09-28 20:56:15,432 [grading.py:100] INFO: ================= Filepaths =================
+2023-09-28 20:56:15,433 [grading.py:101] INFO: input file: ./outputs/example-fp_growth-0.1-0.3.csv
+2023-09-28 20:56:15,433 [grading.py:102] INFO: reference file: ./outputs/example-fp_growth-0.1-0.3.csv
+2023-09-28 20:56:15,433 [grading.py:111] INFO: Rules not in reference:
+2023-09-28 20:56:15,436 [grading.py:116] INFO: =================Results=================
+2023-09-28 20:56:15,436 [grading.py:117] INFO: Pass: True
+2023-09-28 20:57:02,730 [grading.py:100] INFO: ================= Filepaths =================
+2023-09-28 20:57:02,730 [grading.py:101] INFO: input file: ./outputs/example-fp_growth-0.1-0.3.csv
+2023-09-28 20:57:02,731 [grading.py:102] INFO: reference file: ./outputs/example-fp_growth-0.1-0.4.csv
+2023-09-28 20:57:02,731 [grading.py:111] INFO: Rules not in reference:
+2023-09-28 20:57:02,733 [grading.py:115] INFO: RuleTuple(antecedent="['18']", consequent="['14']", lift=1.04, confidence=0.75, support=0.53)
+2023-09-28 20:57:02,734 [grading.py:116] INFO: =================Results=================
+2023-09-28 20:57:02,734 [grading.py:117] INFO: Pass: False
+2023-09-28 20:57:40,083 [grading.py:100] INFO: ================= Filepaths =================
+2023-09-28 20:57:40,083 [grading.py:101] INFO: input file: ./outputs/example-fp_growth-0.1-0.3.csv
+2023-09-28 20:57:40,083 [grading.py:102] INFO: reference file: ./outputs/example-fp_growth-0.1-0.4.csv
+2023-09-28 20:57:40,083 [grading.py:111] INFO: Rules not in reference:
+2023-09-28 20:57:40,085 [grading.py:115] INFO: RuleTuple(antecedent="['18']", consequent="['14']", lift=1.04, confidence=0.75, support=0.53)
+2023-09-28 20:57:40,086 [grading.py:116] INFO: =================Results=================
+2023-09-28 20:57:40,086 [grading.py:117] INFO: Pass: False
+2023-09-28 20:58:06,066 [grading.py:129] ERROR: Error tokenizing data. C error: Expected 5 fields in line 11, saw 6
+Traceback (most recent call last):
+  File "C:\Users\n0970\Desktop\IKMlab\hw1_example_2023\grading.py", line 127, in <module>
+    main(args)
+  File "C:\Users\n0970\Desktop\IKMlab\hw1_example_2023\grading.py", line 93, in main
+    reference = read_csv(reference_path)
+  File "C:\Users\n0970\Desktop\IKMlab\hw1_example_2023\grading.py", line 71, in read_csv
+    return pd.read_csv(file_path)
+  File "C:\Users\n0970\AppData\Local\Programs\Python\Python310\lib\site-packages\pandas\util\_decorators.py", line 211, in wrapper
+    return func(*args, **kwargs)
+  File "C:\Users\n0970\AppData\Local\Programs\Python\Python310\lib\site-packages\pandas\util\_decorators.py", line 317, in wrapper
+    return func(*args, **kwargs)
+  File "C:\Users\n0970\AppData\Local\Programs\Python\Python310\lib\site-packages\pandas\io\parsers\readers.py", line 950, in read_csv
+    return _read(filepath_or_buffer, kwds)
+  File "C:\Users\n0970\AppData\Local\Programs\Python\Python310\lib\site-packages\pandas\io\parsers\readers.py", line 611, in _read
+    return parser.read(nrows)
+  File "C:\Users\n0970\AppData\Local\Programs\Python\Python310\lib\site-packages\pandas\io\parsers\readers.py", line 1772, in read
+    ) = self._engine.read(  # type: ignore[attr-defined]
+  File "C:\Users\n0970\AppData\Local\Programs\Python\Python310\lib\site-packages\pandas\io\parsers\c_parser_wrapper.py", line 243, in read
+    chunks = self._reader.read_low_memory(nrows)
+  File "pandas\_libs\parsers.pyx", line 808, in pandas._libs.parsers.TextReader.read_low_memory
+  File "pandas\_libs\parsers.pyx", line 866, in pandas._libs.parsers.TextReader._read_rows
+  File "pandas\_libs\parsers.pyx", line 852, in pandas._libs.parsers.TextReader._tokenize_rows
+  File "pandas\_libs\parsers.pyx", line 1973, in pandas._libs.parsers.raise_parser_error
+pandas.errors.ParserError: Error tokenizing data. C error: Expected 5 fields in line 11, saw 6
+
+2023-09-28 20:58:16,420 [grading.py:100] INFO: ================= Filepaths =================
+2023-09-28 20:58:16,421 [grading.py:101] INFO: input file: ./outputs/example-fp_growth-0.1-0.3.csv
+2023-09-28 20:58:16,421 [grading.py:102] INFO: reference file: ./outputs/example-fp_growth-0.1-0.4.csv
+2023-09-28 20:58:16,421 [grading.py:111] INFO: Rules not in reference:
+2023-09-28 20:58:16,423 [grading.py:115] INFO: RuleTuple(antecedent="['18']", consequent="['14']", lift=1.04, confidence=0.75, support=0.53)
+2023-09-28 20:58:16,424 [grading.py:116] INFO: =================Results=================
+2023-09-28 20:58:16,425 [grading.py:117] INFO: Pass: False
