@@ -8,6 +8,6 @@ def parse_args():
 
     a('--min_sup', type=float, default=0.05, help='Minimum support')
     a('--min_conf', type=float, default=0.05, help='Minimum confidence')
-    a('--dataset', type=str, default='ibm-2023.txt', help='Dataset to use, please include the extension')
+    a('--dataset', type=str, default='ibm-2023-released.txt', help='Dataset to use, please include the extension')
 
     return p.parse_args()
