@@ -1,17 +1,18 @@
 import numpy as np
 import pandas as pd
 import ast
-from data_proc import turn_to_list
+from utils import turn_to_list, timer
+
 # output: ['antecedent', 'consequent', 'lift', 'confidence', 'support']
 
 def create_itemset_l1(dataset, min_sup_num):
     l1 = {}
     for transaction in dataset:
         for item in transaction:
-            if item not in l1:
-                l1[item] = 1
+            if str([item]) not in l1:
+                l1[str([item])] = 1
             else:
-                l1[item] += 1   
+                l1[str([item])] += 1   
     delete_item = []
     for item, value in l1.items():
         if value < min_sup_num:
@@ -20,42 +21,48 @@ def create_itemset_l1(dataset, min_sup_num):
         del l1[delete]
     return l1
     
-def create_itemset_lk(dataset, lk, min_sup_num):
-    if isinstance(next(iter(lk)), int):
-        now_k = len(next(iter(lk)))
-    else:
-        now_k = len(ast.literal_eval(next(iter(lk))))
-    # print(now_k)
-    transactions = list(lk.keys())
+def create_itemset_lk(dataset, past_lk, min_sup_num):
+    now_k = len(ast.literal_eval(next(iter(past_lk))))
+    print(now_k)
+    transactions = list(past_lk.keys())
+    
+    new_lk = {}
+    combined_set = []
     if isinstance(transactions[0], str):
         for tran_count in range(len(transactions)):
             transactions[tran_count] = ast.literal_eval(transactions[tran_count])
-    # print(list([transactions[3]]))
-    lk = {}
-    for antecedent_id in range(0,len(transactions)-1):
+    # print(transactions)
+    for antecedent_id in range(len(transactions)-1):
         for consequent_id in range(antecedent_id+1, len(transactions)):
-            combined_set = []
-            combined_set = list([transactions[antecedent_id]])
-            combined_set += list([transactions[consequent_id]])
+            combined_set = list(transactions[antecedent_id])
+            combined_set += list(transactions[consequent_id])
             combined_set = set(combined_set)
             combined_set = list(combined_set)
+            # print(combined_set)
             if len(combined_set) == now_k+1:
                 pattern_count = 0
                 for tran in dataset:
                     if all(elem in tran  for elem in combined_set):
                         pattern_count += 1
                 if pattern_count >= min_sup_num:
-                    lk[str(combined_set)] = pattern_count
-        break
-    # print(lk)
-    return lk.update(create_itemset_lk(dataset, lk, min_sup_num))
-    
+                    new_lk[str(combined_set)] = pattern_count
+    print(dict(list(new_lk.items())[:5]))
+    print(len(new_lk))
+    if len(new_lk) == 0:
+        return {}
+    return new_lk.update(create_itemset_lk(dataset, new_lk, min_sup_num))
+
+@timer 
 def apriori(input_data, a):
     dataset = turn_to_list(input_data)
     min_sup_num = a.min_sup*len(dataset)
+    # print(len(dataset))
+    # print(min_sup_num)
 
     l1 = create_itemset_l1(dataset, min_sup_num)
-    all_lk = create_itemset_lk(dataset, l1, min_sup_num)
-    print(all_lk)
     # print(l1)
+    all_lk = create_itemset_lk(dataset, l1, min_sup_num)
+    print(len(all_lk))
+    # print(l1)
+    
     # return results
