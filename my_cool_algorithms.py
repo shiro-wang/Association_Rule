@@ -32,25 +32,39 @@ def create_itemset_lk(dataset, past_lk, min_sup_num):
         for tran_count in range(len(transactions)):
             transactions[tran_count] = ast.literal_eval(transactions[tran_count])
     # print(transactions)
+    catch_pattern = []
     for antecedent_id in range(len(transactions)-1):
         for consequent_id in range(antecedent_id+1, len(transactions)):
             combined_set = list(transactions[antecedent_id])
             combined_set += list(transactions[consequent_id])
             combined_set = set(combined_set)
             combined_set = list(combined_set)
-            # print(combined_set)
+            
+            # 個數篩選
             if len(combined_set) == now_k+1:
-                pattern_count = 0
-                for tran in dataset:
-                    if all(elem in tran  for elem in combined_set):
-                        pattern_count += 1
-                if pattern_count >= min_sup_num:
-                    new_lk[str(combined_set)] = pattern_count
+                # 通過個數篩選下來的pattern先存放，避免重複計算
+                in_catch = False
+                for c_pt in catch_pattern:
+                    if all(elem in c_pt for elem in combined_set):
+                        in_catch = True
+                        break
+                if in_catch == False:
+                    catch_pattern.append(combined_set)
+                    # print(combined_set)
+                    # 計算此pattern個數
+                    pattern_count = 0
+                    for tran in dataset:
+                        if all(elem in tran  for elem in combined_set):
+                            pattern_count += 1
+                    if pattern_count >= min_sup_num:
+                        new_lk[str(combined_set)] = pattern_count
     print(dict(list(new_lk.items())[:5]))
     print(len(new_lk))
     if len(new_lk) == 0:
-        return {}
-    return new_lk.update(create_itemset_lk(dataset, new_lk, min_sup_num))
+        return new_lk
+    # We can't use "return dict.update()" because the original dictionary doesn't contain any keys and
+    new_lk.update(create_itemset_lk(dataset, new_lk, min_sup_num))
+    return new_lk
 
 @timer 
 def apriori(input_data, a):
