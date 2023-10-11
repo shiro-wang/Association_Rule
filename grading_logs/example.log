@@ -74,3 +74,17 @@ pandas.errors.ParserError: Error tokenizing data. C error: Expected 5 fields in 
 2023-09-28 20:58:16,423 [grading.py:115] INFO: RuleTuple(antecedent="['18']", consequent="['14']", lift=1.04, confidence=0.75, support=0.53)
 2023-09-28 20:58:16,424 [grading.py:116] INFO: =================Results=================
 2023-09-28 20:58:16,425 [grading.py:117] INFO: Pass: False
+2023-10-11 14:58:28,830 [grading.py:100] INFO: ================= Filepaths =================
+2023-10-11 14:58:28,831 [grading.py:101] INFO: input file: ./outputs/example-fp_growth-0.1-0.3.csv
+2023-10-11 14:58:28,831 [grading.py:102] INFO: reference file: ./outputs/example-fp_growth-0.1-0.4.csv
+2023-10-11 14:58:28,831 [grading.py:111] INFO: Rules not in reference:
+2023-10-11 14:58:28,833 [grading.py:115] INFO: RuleTuple(antecedent="['18']", consequent="['14']", lift=1.04, confidence=0.75, support=0.53)
+2023-10-11 14:58:28,834 [grading.py:116] INFO: =================Results=================
+2023-10-11 14:58:28,834 [grading.py:117] INFO: Pass: False
+2023-10-11 15:00:56,427 [grading.py:100] INFO: ================= Filepaths =================
+2023-10-11 15:00:56,427 [grading.py:101] INFO: input file: ./outputs/example-fp_growth-0.1-0.3.csv
+2023-10-11 15:00:56,427 [grading.py:102] INFO: reference file: ./outputs/example-fp_growth-0.1-0.4.csv
+2023-10-11 15:00:56,428 [grading.py:111] INFO: Rules not in reference:
+2023-10-11 15:00:56,430 [grading.py:115] INFO: RuleTuple(antecedent="['18']", consequent="['14']", lift=1.04, confidence=0.75, support=0.53)
+2023-10-11 15:00:56,431 [grading.py:116] INFO: =================Results=================
+2023-10-11 15:00:56,431 [grading.py:117] INFO: Pass: False
