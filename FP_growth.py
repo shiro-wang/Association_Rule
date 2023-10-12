@@ -23,6 +23,7 @@ def update_Header(node, target_node):
         node = node.nodeLink
     node.nodeLink = target_node
 
+# Update FP_tree，包含更新header_table
 def update_FPtree(items, now_Node, header_table, count):
     if items[0] in now_Node.children:
         # 判斷是否已存在於子結點，有的話子count+1
@@ -41,6 +42,10 @@ def update_FPtree(items, now_Node, header_table, count):
         update_FPtree(items[1::], now_Node.children[items[0]], header_table, count)
 
 def create_itemset_newdata(dataset, min_sup_num):
+    '''
+    :return: new_dataset: 新的transaction list, 去掉低於min_sup, 經過item_count排序
+    :return: item_head: [("['38']", 2265), ("['36']", 1879),...]
+    '''
     l1 = {}
     for transaction in dataset:
         for item in transaction:
@@ -78,6 +83,27 @@ def create_itemset_newdata(dataset, min_sup_num):
 def ascendFPtree(leafNode, prefixPath):
     if leafNode.parrentNode != None:
         prefixPath.append(leafNode.itemname)
+        ascendFPtree(leafNode.parrentNode, prefixPath)
+
+# 輸入節點，找prefix_path後形成condition pattern base      
+def find_prefix_path(base_pattern, header_table):
+    '''
+    :param base_pattern: 要查詢的pat
+    :param header_table: 查詢nodetree中pattern所在節點 透過header_table linklist一個個找
+    :return: cond_pat_base 建構condition pattern base
+    '''
+    condition_pat = {}
+    treeNode = header_table[base_pattern][1]
+    # 照header_table linklist循環找prefix
+    while treeNode != None:
+        prefix_path = []
+        ascendFPtree(treeNode, prefix_path)
+        # 去掉最基本的Null Set頭
+        if len(prefix_path) > 1:
+            condition_pat[frozenset(prefix_path[1:])] = treeNode.count
+        treeNode = treeNode.nodeLink
+    return condition_pat
+    
 
 def do_fp_growth(dataset, min_sup_num):
     dataset = [['m','br','be'],
