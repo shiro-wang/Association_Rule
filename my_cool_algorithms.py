@@ -38,11 +38,11 @@ def create_itemset_lk(dataset, past_lk, min_sup_num):
     item_count = {}
     for old_pattern in transactions:
         for item in old_pattern:
-            if int(item) not in item_exist:
-                item_exist.append(int(item))
-                item_count[int(item)] = 1
+            if item not in item_exist:
+                item_exist.append(item)
+                item_count[item] = 1
             else:
-                item_count[int(item)] += 1
+                item_count[item] += 1
     # print("Before")
     # print(item_exist)
     # print(item_count)
@@ -58,7 +58,6 @@ def create_itemset_lk(dataset, past_lk, min_sup_num):
         item_exist.remove(del_item)
         item_count.pop(del_item)
     item_exist = sorted(item_exist)
-    
     # print(item_exist)
     # print(dict(sorted(item_count.items())))
     
@@ -98,7 +97,7 @@ def create_itemset_lk(dataset, past_lk, min_sup_num):
         # print(old_pattern)
         
         # 取此pattern最大值，確保往後不會有重複
-        biggest_item = int(old_pattern[-1])
+        biggest_item = old_pattern[-1]
         if biggest_item in item_exist:
             biggest_item_pos = item_exist.index(biggest_item)
             for new_item_pos in range(biggest_item_pos+1, len(item_exist)):
@@ -114,11 +113,11 @@ def create_itemset_lk(dataset, past_lk, min_sup_num):
                 if pattern_count >= min_sup_num:
                     new_lk[str(combined_set)] = pattern_count
     print(dict(list(new_lk.items())[:5]))
-    print(len(new_lk))
     
     # test
-    new_lk.update(past_lk)
-    return new_lk
+    # new_lk.update(past_lk)
+    # return new_lk
+    
     if len(new_lk) == 0:
         return new_lk
     # We can't use "return dict.update()" because the original dictionary doesn't contain any keys
@@ -127,29 +126,47 @@ def create_itemset_lk(dataset, past_lk, min_sup_num):
 
 # output: [antecedent,consequent,support,confidence,lift]
 def get_apriori_results(dataset, l1, all_lk):
-    # 先複製一份出來，去掉單一item的pattern
+    # 先複製一份出來
     pre_process = {}
     pre_process.update(all_lk)
-    for sin_pat, _ in l1.items():
-        pre_process.pop(sin_pat)
-        
+    all_lk.update(l1)
     outputs = []
     # 取結果出來
-    for freq_pat in pre_process:
+    for freq_pat, sup in pre_process.items():
+        # str轉python
         freq_pat = ast.literal_eval(freq_pat)
-        # 做可能的所有組合
+        # print(freq_pat)
+        # 可能的所有組合
         for k in range(1, len(freq_pat)):
             candidates = list(combinations(freq_pat, k))
             # print(candidates)
+            # [(0,), (1,),]
+            processed_candidates = []
             for cand in candidates:
-                cand = str(list(cand))
-                # print(cand)
-                antecedent = cand
-                consequent = [elem for elem in candidates if elem not in cand]
-                support = all_lk[freq_pat] / len(dataset)
-                confidence = all_lk[freq_pat] / all_lk[antecedent]
-                lift = confidence / all_lk[consequent] / len(dataset)
-                outputs.append([antecedent, consequent, support, confidence, lift])
+                # (0,)
+                untuple_cand = []
+                for c in cand:
+                    untuple_cand.append(c)
+                processed_candidates.append(untuple_cand)
+            # print(processed_candidates)
+            
+            # [['0'], ['1']]
+            for cand_list in processed_candidates:
+                consequent = []
+                for elem in freq_pat:
+                    if elem not in cand_list:
+                        consequent.append(elem)
+                cand_list = str(cand_list)
+                
+                antecedent = cand_list
+                consequent = str(consequent)
+                # print(cand_list)
+                # print(consequent)
+                # print(all_lk[antecedent])
+                support = sup / len(dataset)
+                confidence = sup / all_lk[antecedent]
+                lift = sup / all_lk[antecedent] / all_lk[consequent] * len(dataset)
+                outputs.append([ast.literal_eval(antecedent), ast.literal_eval(consequent), support, confidence, lift])
     return outputs
 @timer 
 def apriori(input_data, a):
@@ -163,6 +180,7 @@ def apriori(input_data, a):
     all_lk = create_itemset_lk(dataset, l1, min_sup_num)
     print(len(all_lk))
     results = get_apriori_results(dataset, l1, all_lk)
+    # print(results)
     # print(l1)
     
-    # return results
+    return results

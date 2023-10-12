@@ -53,7 +53,7 @@ def write_file(data: List[Tuple[Any]], filename: Union[str, Path]) -> None:
         conf = round(conf, PREC)
         lift = round(lift, PREC)
         proc_data.append([a, c, sup, conf, lift])
-    print(proc_data)
+    # print(proc_data)
     with open(filename, 'w', newline="") as f:
         writer = csv.writer(f)
         # rule format: antecedent --> consequent
