@@ -50,19 +50,19 @@ def main():
 
     # # TODO: you have to implement this function by yourself
     # apriori_out = my_cool_algorithms.apriori(input_data, a)
-    # # # Write output to file
+    # # Write output to file
     # utils.write_file(
     #     data=apriori_out,
     #     filename=config.OUT_DIR / f"{filename}-apriori-{a.min_sup}-{a.min_conf}.csv"
     # )
 
-    # # TODO: you have to implement this function by yourself
+    # TODO: you have to implement this function by yourself
     fp_growth_out = my_cool_algorithms.fp_growth(input_data, a)
-    # # Write output to file
-    # utils.write_file(
-    #     data=fp_growth_out,
-    #     filename=config.OUT_DIR / f"{filename}-fp_growth-{a.min_sup}-{a.min_conf}.csv"
-    # )
+    # Write output to file
+    utils.write_file(
+        data=fp_growth_out,
+        filename=config.OUT_DIR / f"{filename}-fp_growth-{a.min_sup}-{a.min_conf}.csv"
+    )
 
 if __name__ == "__main__":
     main()

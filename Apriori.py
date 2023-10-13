@@ -170,7 +170,7 @@ def do_apriori(dataset, min_sup_num):
     l1 = create_itemset_l1(dataset, min_sup_num)
     # print(l1)
     all_lk = create_itemset_lk(dataset, l1, min_sup_num)
-    print(len(all_lk))
+    print('After remove single apriori: ', len(all_lk))
     results = get_apriori_results(dataset, l1, all_lk)
     # print(results)
     # print(l1)
