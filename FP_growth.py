@@ -163,13 +163,15 @@ def get_fpgrwoth_results(dataset, freq_patterns):
     outputs = []
     # 取結果出來
     for freq_pat, sup in freq_patterns.items():
+        # print(freq_pat)
         # str轉python
         freq_pat = ast.literal_eval(freq_pat)
-        # print(freq_pat)
+        freq_pat = list(freq_pat)
+        print(freq_pat)
         # 可能的所有組合
         for k in range(1, len(freq_pat)):
-            candidates = list(combinations(freq_pat, k))
-            # print(candidates)
+            candidates = combinations(freq_pat, k)
+            print(*candidates)
             # [(0,), (1,),]
             processed_candidates = []
             for cand in candidates:
@@ -237,4 +239,4 @@ def do_fp_growth(dataset, min_sup_num):
     # for k,v in freq_patterns.items():  
     #     print(k,v)
     results = get_fpgrwoth_results(dataset, freq_patterns)
-    return {}
+    return results
