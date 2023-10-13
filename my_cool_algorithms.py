@@ -23,3 +23,5 @@ def fp_growth(input_data, a):
     # print(len(dataset))
     # print(min_sup_num)
     results = do_fp_growth(dataset, min_sup_num)
+    
+    return results

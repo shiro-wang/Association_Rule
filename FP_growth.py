@@ -113,8 +113,9 @@ def mineFPtree(FP_tree, header_table, min_sup_num, pre_freq_set, freq_patterns):
         new_freq_set = pre_freq_set.copy()
         new_freq_set.add(base_pattern)
         # print('new_freq_set=', new_freq_set, pre_freq_set)
-        # print(header_table[base_pattern][1].count)
-        freq_patterns[str(new_freq_set)] = header_table[base_pattern][1].count
+        # if header_table[base_pattern][0] < min_sup_num:
+        #     print('error: ', min_sup_num, header_table[base_pattern][1])
+        freq_patterns[frozenset(new_freq_set)] = header_table[base_pattern][0]
         # print('freq_patterns=', freq_patterns)
         condpat_bases = find_prefix_path(base_pattern, header_table)
         cond_tree, cond_head = create_FPtree_bydict(condpat_bases, min_sup_num)
@@ -129,12 +130,14 @@ def create_FPtree_bydict(dataset, min_sup_num):
     for trans in dataset:
         for item in trans:
             header_table[item] = header_table.get(item, 0) + dataset[trans]
+    # print('header_table= ', header_table, 'min_sup_num= ', min_sup_num)
     delete_k = []
     for k in header_table.keys():
         if header_table[k] < min_sup_num:
             delete_k.append(k)
     for k in delete_k:
-        del(header_table[k])
+        del header_table[k]
+    # print('after del: ', header_table)
     # print(header_table)
     freq_item_set = set(header_table.keys())
     if len(freq_item_set) == 0:
@@ -144,7 +147,7 @@ def create_FPtree_bydict(dataset, min_sup_num):
     for k,v in header_table.items():
         new_header_table[k] = [v, None]
     header_table = new_header_table
-    # print(header_table)
+    print(header_table)
     return_tree = FP_treeNode('Null Set',1,None)
     for tran_set, count in dataset.items():
         # 紀錄階段性item出現次數
@@ -158,20 +161,45 @@ def create_FPtree_bydict(dataset, min_sup_num):
             update_FPtree(ordered_item, return_tree, header_table, count)
     return return_tree, header_table
 
-def get_fpgrwoth_results(dataset, freq_patterns):
+def mycombinations(things, k):
+    if k == len(things):
+        return [things[:]]
+    if len(things) < k or k == 0:
+        return [[]]
+    finalcomb = []
+    subcomb1 = mycombinations(things[1:], k - 1)
+    subcomb2 = mycombinations(things[1:], k)
+    for comb in subcomb1:
+        firstelement = [things[0]]
+        firstelement += comb
+        finalcomb.append(firstelement)
+    finalcomb += subcomb2
+    return finalcomb
+
+def get_fpgrwoth_results(dataset, freq_patterns, min_sup_num):
+    # 去掉單元素pattern，但要另外存
+    saved_freq_patterns = freq_patterns.copy()
+    delete_single_pattern = []
+    for k,_ in freq_patterns.items():
+        if len(k) == 1:
+            delete_single_pattern.append(k)
+    for d in delete_single_pattern:
+        freq_patterns.pop(d)
+    print('After remove single fp_growth: ', len(freq_patterns))
     
+    # for k,v in freq_patterns.items():  
+    #     print(k,v)
     outputs = []
+    
     # 取結果出來
     for freq_pat, sup in freq_patterns.items():
-        # print(freq_pat)
-        # str轉python
-        freq_pat = ast.literal_eval(freq_pat)
+        # print('freq_pat: ', freq_pat)
+        # frozenset 轉 list
         freq_pat = list(freq_pat)
-        print(freq_pat)
         # 可能的所有組合
         for k in range(1, len(freq_pat)):
-            candidates = combinations(freq_pat, k)
-            print(*candidates)
+            candidates = list(mycombinations(freq_pat, k))
+            # print(candidates)
             # [(0,), (1,),]
             processed_candidates = []
             for cand in candidates:
@@ -188,17 +216,20 @@ def get_fpgrwoth_results(dataset, freq_patterns):
                 for elem in freq_pat:
                     if elem not in cand_list:
                         consequent.append(elem)
-                cand_list = str(cand_list)
-                
-                antecedent = cand_list
-                consequent = str(consequent)
+                        
+                cand_set = frozenset(cand_list)
+                antecedent = cand_set
+                consequent = frozenset(consequent)
+                # print(antecedent, ' ', consequent)
                 # print(cand_list)
                 # print(consequent)
                 # print(all_lk[antecedent])
+                # if min_sup_num > sup:
+                #     print("error: ", min_sup_num, sup)
                 support = sup / len(dataset)
-                confidence = sup / freq_patterns[antecedent]
-                lift = sup / freq_patterns[antecedent] / freq_patterns[consequent] * len(dataset)
-                outputs.append([ast.literal_eval(antecedent), ast.literal_eval(consequent), support, confidence, lift])
+                confidence = sup / saved_freq_patterns[antecedent]
+                lift = sup / saved_freq_patterns[antecedent] / saved_freq_patterns[consequent] * len(dataset)
+                outputs.append([antecedent, consequent, support, confidence, lift])
     return outputs
 # main function
 def do_fp_growth(dataset, min_sup_num):
@@ -229,14 +260,6 @@ def do_fp_growth(dataset, min_sup_num):
     
     # print('Before remove single fp_growth: ', len(freq_patterns))
     
-    delete_single_pattern = []
-    for k,v in freq_patterns.items():
-        if len(ast.literal_eval(k)) == 1:
-            delete_single_pattern.append(k)
-    for d in delete_single_pattern:
-        freq_patterns.pop(d)
-    print('After remove single fp_growth: ', len(freq_patterns))
-    # for k,v in freq_patterns.items():  
-    #     print(k,v)
-    results = get_fpgrwoth_results(dataset, freq_patterns)
+    results = get_fpgrwoth_results(dataset, freq_patterns, min_sup_num)
+    print(results[:5])
     return results
