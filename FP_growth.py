@@ -147,7 +147,7 @@ def create_FPtree_bydict(dataset, min_sup_num):
     for k,v in header_table.items():
         new_header_table[k] = [v, None]
     header_table = new_header_table
-    print(header_table)
+    # print(header_table)
     return_tree = FP_treeNode('Null Set',1,None)
     for tran_set, count in dataset.items():
         # 紀錄階段性item出現次數
@@ -176,7 +176,7 @@ def mycombinations(things, k):
     finalcomb += subcomb2
     return finalcomb
 
-def get_fpgrwoth_results(dataset, freq_patterns, min_sup_num):
+def get_fpgrwoth_results(dataset, freq_patterns, min_sup_num, min_conf):
     # 去掉單元素pattern，但要另外存
     saved_freq_patterns = freq_patterns.copy()
     delete_single_pattern = []
@@ -228,11 +228,12 @@ def get_fpgrwoth_results(dataset, freq_patterns, min_sup_num):
                 #     print("error: ", min_sup_num, sup)
                 support = sup / len(dataset)
                 confidence = sup / saved_freq_patterns[antecedent]
-                lift = sup / saved_freq_patterns[antecedent] / saved_freq_patterns[consequent] * len(dataset)
-                outputs.append([antecedent, consequent, support, confidence, lift])
+                if confidence > min_conf:
+                    lift = sup / saved_freq_patterns[antecedent] / saved_freq_patterns[consequent] * len(dataset)
+                    outputs.append([antecedent, consequent, support, confidence, lift])
     return outputs
 # main function
-def do_fp_growth(dataset, min_sup_num):
+def do_fp_growth(dataset, min_sup_num, min_conf):
     # dataset = [['m','br','be'],
     #            ['br','c'],
     #            ['br','e'],
@@ -260,6 +261,7 @@ def do_fp_growth(dataset, min_sup_num):
     
     # print('Before remove single fp_growth: ', len(freq_patterns))
     
-    results = get_fpgrwoth_results(dataset, freq_patterns, min_sup_num)
-    print(results[:5])
+    results = get_fpgrwoth_results(dataset, freq_patterns, min_sup_num, min_conf)
+    # print(results[:5])
+    print('length of fp_growth results: ',len(results))
     return results

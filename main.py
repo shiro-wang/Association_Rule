@@ -48,13 +48,13 @@ def main():
     input_data: List[List[str]] = utils.read_file(config.IN_DIR / a.dataset)
     filename = Path(a.dataset).stem
 
-    # # TODO: you have to implement this function by yourself
-    # apriori_out = my_cool_algorithms.apriori(input_data, a)
-    # # Write output to file
-    # utils.write_file(
-    #     data=apriori_out,
-    #     filename=config.OUT_DIR / f"{filename}-apriori-{a.min_sup}-{a.min_conf}.csv"
-    # )
+    # TODO: you have to implement this function by yourself
+    apriori_out = my_cool_algorithms.apriori(input_data, a)
+    # Write output to file
+    utils.write_file(
+        data=apriori_out,
+        filename=config.OUT_DIR / f"{filename}-apriori-{a.min_sup}-{a.min_conf}.csv"
+    )
 
     # TODO: you have to implement this function by yourself
     fp_growth_out = my_cool_algorithms.fp_growth(input_data, a)

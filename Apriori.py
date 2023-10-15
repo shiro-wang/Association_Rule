@@ -122,7 +122,7 @@ def create_itemset_lk(dataset, past_lk, min_sup_num):
     return new_lk
 
 # output: [antecedent,consequent,support,confidence,lift]
-def get_apriori_results(dataset, l1, all_lk):
+def get_apriori_results(dataset, l1, all_lk, min_conf):
     # 先複製一份出來
     pre_process = {}
     pre_process.update(all_lk)
@@ -162,16 +162,17 @@ def get_apriori_results(dataset, l1, all_lk):
                 # print(all_lk[antecedent])
                 support = sup / len(dataset)
                 confidence = sup / all_lk[antecedent]
-                lift = sup / all_lk[antecedent] / all_lk[consequent] * len(dataset)
-                outputs.append([ast.literal_eval(antecedent), ast.literal_eval(consequent), support, confidence, lift])
+                if confidence > min_conf:
+                    lift = sup / all_lk[antecedent] / all_lk[consequent] * len(dataset)
+                    outputs.append([ast.literal_eval(antecedent), ast.literal_eval(consequent), support, confidence, lift])
     return outputs
 
-def do_apriori(dataset, min_sup_num):
+def do_apriori(dataset, min_sup_num, min_conf):
     l1 = create_itemset_l1(dataset, min_sup_num)
     # print(l1)
     all_lk = create_itemset_lk(dataset, l1, min_sup_num)
     print('After remove single apriori: ', len(all_lk))
-    results = get_apriori_results(dataset, l1, all_lk)
-    # print(results)
+    results = get_apriori_results(dataset, l1, all_lk, min_conf)
+    print('length of apriori results: ',len(results))
     # print(l1)
     return results
