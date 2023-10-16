@@ -106,7 +106,7 @@ def turn_to_list(datas):
     per_tran = []
     data_count = 0
     for data in datas:
-        if int(data[0]) != data_count:
+        if int(data[1]) != data_count:
             # print(f"data: {data[0]} count: {data_count}")
             data_count += 1
             return_dataset.append(per_tran)

@@ -162,7 +162,7 @@ def get_apriori_results(dataset, l1, all_lk, min_conf):
                 # print(all_lk[antecedent])
                 support = sup / len(dataset)
                 confidence = sup / all_lk[antecedent]
-                if confidence > min_conf:
+                if confidence >= min_conf:
                     lift = sup / all_lk[antecedent] / all_lk[consequent] * len(dataset)
                     outputs.append([ast.literal_eval(antecedent), ast.literal_eval(consequent), support, confidence, lift])
     return outputs

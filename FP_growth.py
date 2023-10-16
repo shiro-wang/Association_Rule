@@ -228,7 +228,7 @@ def get_fpgrwoth_results(dataset, freq_patterns, min_sup_num, min_conf):
                 #     print("error: ", min_sup_num, sup)
                 support = sup / len(dataset)
                 confidence = sup / saved_freq_patterns[antecedent]
-                if confidence > min_conf:
+                if confidence >= min_conf:
                     lift = sup / saved_freq_patterns[antecedent] / saved_freq_patterns[consequent] * len(dataset)
                     outputs.append([antecedent, consequent, support, confidence, lift])
     return outputs

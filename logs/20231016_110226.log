@@ -1,0 +1,1 @@
+2023-10-16 11:02:26,865 [main.py:45] INFO: Arguments: Namespace(min_sup=0.001, min_conf=0.01, dataset='kaggle-groceries.txt')
